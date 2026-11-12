@@ -1,0 +1,12 @@
+:root{
+  --teal:#0A6E69; --teal-dark:#07524F; --teal-tint:#E6F0EE;
+  --ink:#15262B; --ink-2:#50626A; --control:#66797E;
+  --paper:#F4F6F6; --surface:#FFFFFF; --line:#DCE3E2;
+  --rail:#15262B; --rail-hover:#1F343A; --rail-text:#C9D6D8; --rail-label:#9FB1B5; --rail-accent:#3FB8AC;
+  --danger:#B42318; --focus:#1B5FC1;
+  --mint:#A7DED9; --amber:#F4B860; /* มาสคอตเท่านั้น */
+  --font-sans:'Anuphan','Sarabun',system-ui,sans-serif;
+  --font-mono:'Geist Mono',ui-monospace,monospace; /* ตัวเลขและรหัสเท่านั้น ไม่มีอักษรไทย */
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --touch:44px; --min-text:13px;
+}
