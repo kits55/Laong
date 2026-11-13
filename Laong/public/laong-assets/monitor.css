@@ -1,0 +1,28 @@
+.monitor-layout { display: grid; gap: 16px; }
+.monitor-bar, .monitor-switch { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.monitor-bar > .button { margin-inline-start: auto; }
+.monitor-controls { display: grid; gap: 12px; }
+.monitor-controls :is(h2, p), .monitor-events :is(h2, p) { margin: 0; }
+.monitor-switch { min-height: 44px; padding-inline: 8px; cursor: pointer; }
+.monitor-switch input { width: 20px; height: 20px; accent-color: #0a6c67; }
+.monitor-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; }
+.monitor-grid > :only-child { grid-column: 1 / -1; }
+.monitor-camera { overflow: hidden; }
+.monitor-frame {
+  aspect-ratio: 16 / 9; min-height: 216px; background: #15262b; color: #edf7f6;
+  display: grid; place-content: center; justify-items: center; gap: 8px; padding: 16px; text-align: center;
+}
+.monitor-frame > span:not(.monitor-lens) { color: #bfcece; font-size: .875rem; }
+.monitor-lens { border: 1px solid #85a5a4; border-radius: 8px; width: 64px; height: 48px; position: relative; }
+.monitor-lens::after { content: ''; position: absolute; inset: 12px 20px; border: 1px solid #85a5a4; border-radius: 50%; }
+.monitor-frame[data-frame="true"] .monitor-lens { border-color: #73d0c3; }
+.monitor-frame > strong { animation: monitor-enter 200ms ease-out both; }
+.monitor-events { display: grid; align-content: start; gap: 12px; }
+.monitor-events ol { margin: 0; padding: 0; list-style: none; }
+.monitor-events li { display: flex; flex-wrap: wrap; gap: 12px; padding-block: 8px; border-top: 1px solid #d8e0e0; }
+.monitor-state { font-weight: 600; color: #096760; }
+.lab-extra summary { cursor: pointer; padding-block: 8px; }
+.lab-extra .field-grid { margin-block: 8px; }
+@keyframes monitor-enter { from { opacity: 0; transform: translateY(4px); } }
+@media (max-width: 720px) { .monitor-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .monitor-frame > strong { animation: none; } }

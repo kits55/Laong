@@ -11,17 +11,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="monitor.css">
   <script defer src="reports.js"></script>
   <script defer src="workspace.js"></script>
   <script defer src="calendar.js"></script>
   <script defer src="previews.js"></script>
+  <script defer src="admin.js"></script>
+  <script defer src="monitor.js"></script>
+  <script defer src="mascot.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
   <a class="skip" href="#content">ข้ามไปเนื้อหา</a>
   <div class="shell">
     <aside class="rail">
-      <a class="brand" href="#today"><img alt="" src="icons/laong.svg"><span>Laong <small>ละออง</small></span></a>
+      <a class="brand" href="#today"><img alt="" src="icons/laong.svg"><span>LaOng <small>ละออง</small></span></a>
       <nav id="navigation" aria-label="เมนูหลัก"></nav>
       <div class="rail-footer"><span class="rail-indicator"></span><div>พื้นที่ทดลองบนเครื่อง<small>ข้อมูลอยู่ในเบราว์เซอร์นี้</small></div></div>
     </aside>
@@ -51,7 +56,7 @@
       <label>ชื่อเรียกเครื่อง<input name="name" maxlength="40" placeholder="เช่น เครื่องห้องแล็บ 2" aria-describedby="machine-help machine-error" autofocus></label>
       <div class="field-note" id="machine-help"><small>ชื่อที่ทีมใช้เรียก 2 ถึง 40 ตัวอักษร</small><small id="machine-count" class="mono">0/40</small></div>
       <p id="machine-error" class="field-error" role="alert" hidden></p>
-      <div class="dialog-actions"><button class="button" type="button" data-action="cancel-machine">ยกเลิก</button><button class="button primary">เพิ่มเครื่อง</button></div>
+      <div class="dialog-actions"><button class="button subtle" type="button" data-action="delete-machine" hidden>ลบเครื่อง</button><button class="button" type="button" data-action="cancel-machine">ยกเลิก</button><button class="button primary">เพิ่มเครื่อง</button></div>
     </form>
   </dialog>
   <dialog id="visit-dialog" aria-labelledby="visit-title">
@@ -68,5 +73,15 @@
   <p id="notification" class="notification" role="status" hidden></p>
   <p id="storage-alert" class="storage-alert" role="alert" hidden></p>
   <section id="print-report" aria-label="รายงานการทดลอง"></section>
+  <dialog id="delete-confirmation" aria-labelledby="delete-confirmation-title" aria-describedby="delete-confirmation-detail">
+    <form method="dialog">
+      <h2 id="delete-confirmation-title"></h2>
+      <p id="delete-confirmation-detail" class="muted"></p>
+      <div class="dialog-actions">
+        <button class="button" value="cancel" autofocus>ยกเลิก</button>
+        <button class="button destructive" value="delete">ยืนยันการลบ</button>
+      </div>
+    </form>
+  </dialog>
 </body>
 </html>

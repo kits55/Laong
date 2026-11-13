@@ -1,0 +1,49 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+.stitch-frame { min-height: 100dvh; display: grid; grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto 1fr; }
+.stitch-rail { grid-area: 1 / 1 / -1; position: sticky; top: 0; align-self: start; height: 100dvh; overflow-y: auto; background: #102126; color: var(--rail-text); display: flex; flex-direction: column; gap: 20px; padding: 24px 16px; }
+.stitch-header { grid-area: 1 / 2; justify-content: space-between; gap: 12px; min-height: 64px; background: var(--surface); padding: 8px 28px; border-bottom: 1px solid var(--line); }
+.stitch-context { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+.stitch-context strong { color: var(--ink); }
+.stitch-rail nav { display: grid; gap: 4px; }
+.stitch-note { margin-top: auto; border-top: 1px solid var(--nav-border); padding: 16px 8px 0; font-size: 13px; color: var(--rail-label); }
+.stitch-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 44px; border: 0; border-radius: 8px; background: transparent; padding: 8px 12px; cursor: pointer; text-align: start; }
+.stitch-trigger:hover, .stitch-trigger[data-state=open] { background: var(--rail-hover); color: white; }
+.stitch-rail nav > .nav-link { gap: 12px; padding-inline: 12px; }
+.stitch-trigger-label { display: inline-flex; align-items: center; gap: 12px; }
+.stitch-nav-icon { flex: none; color: var(--rail-label); transition: color 140ms var(--ease); }
+.stitch-rail .nav-link[aria-current=page] .stitch-nav-icon,
+.stitch-trigger[data-state=open] .stitch-nav-icon { color: var(--rail-accent); }
+.stitch-disclosure { display: grid; }
+.stitch-disclosure-inner { min-height: 0; overflow: clip; }
+.stitch-links { margin: 4px 0 8px 20px; padding-inline-start: 8px; border-inline-start: 1px solid var(--nav-border); }
+.stitch-links .nav-link:focus-visible { outline-offset: -3px; }
+.stitch-links .nav-link { font-size: 14px; padding-inline: 13px 8px; }
+.stitch-menu { display: none !important; }
+.stitch-frame .legacy-surface .shell { display: block; min-height: 0; }
+.stitch-frame .legacy-surface .rail, .stitch-frame .legacy-surface .topbar { display: none; }
+.stitch-frame .legacy-surface main { padding-block-start: 28px; }
+.stitch-metrics { display: flex; flex-wrap: wrap; align-items: center; margin: 0 0 16px; padding-block: 8px; border-block: 1px solid var(--line); }
+.stitch-metrics div { display: flex; align-items: baseline; gap: 8px; padding-inline: 16px; }
+.stitch-metrics div:first-child { padding-inline-start: 0; }
+.stitch-metrics div + div { border-inline-start: 1px solid var(--line); }
+.stitch-metrics dt { color: var(--muted); font-size: 14px; }
+.stitch-metrics dd { margin: 0; color: var(--teal-dark); font-size: 17px; font-weight: 500; }
+.stitch-frame .monitor-bar { padding-block-end: 12px; border-bottom: 1px solid var(--line); }
+.stitch-frame .monitor-events { border-top: 3px solid var(--teal); }
+.stitch-frame .run-table tr:hover td { background: #f7faf9; }
+.stitch-frame .run-table .mono { white-space: nowrap; }
+@media (max-width: 860px) {
+  .stitch-frame { display: block; }
+  .stitch-header { padding-inline: 16px; }
+  .stitch-menu { display: inline-flex !important; }
+  .stitch-rail { position: static; height: auto; max-height: 70dvh; }
+  .stitch-rail[data-visible=false] { display: none; }
+  .stitch-frame { display: flex; flex-direction: column; }
+  .stitch-header { order: -1; }
+}
+@media (max-width: 480px) {
+  .stitch-metrics div { padding-inline: 8px; gap: 4px; }
+  .stitch-metrics dt { font-size: 13px; }
+}

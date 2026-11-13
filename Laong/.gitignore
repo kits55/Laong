@@ -1,0 +1,4 @@
+node_modules/
+.next/
+.laong-build/
+next-env.d.ts

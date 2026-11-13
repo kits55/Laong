@@ -19,9 +19,11 @@ function readWorkspace() {
 }
 
 let labWorkspace;
+let workspaceReadFailed = false;
 try {
   labWorkspace = readWorkspace();
 } catch {
+  workspaceReadFailed = true;
   labWorkspace = { machines: [], nextMachine: null, preferences: { historyMinimum: 3 }, readAlerts: [] };
 }
 
@@ -49,8 +51,9 @@ window.addEventListener('storage', (event) => {
   if (event.key !== workspaceKey) return;
   try {
     labWorkspace = readWorkspace();
+    workspaceReadFailed = false;
     if (route().name === 'machines' && !document.querySelector('#machine-dialog').open) refreshMachineResults();
-    if (['calendar', 'today'].includes(route().name) && !visitDialog.open && !dialog.open) render();
+    if (['calendar', 'today', 'notifications'].includes(route().name) && !visitDialog.open && !dialog.open) render();
   } catch {
     message('อ่านข้อมูลที่เปลี่ยนจากอีกแท็บไม่ได้');
   }
@@ -99,7 +102,9 @@ function machineResults() {
       `<li class="machine-row"><div class="machine-name"><span class="mono">${e(machine.id)}</span><strong>${e(machine.name)}</strong></div>
       <div><span class="status ${state === 'maintenance' ? 'results' : state}">${machineStates[state]}</span></div>
       <div class="machine-context">${run ? `<p class="hint"><span class="mono">${e(run.id)}</span> · ${e(run.title)}</p>${state === 'running' ? etaMarkup(run, true) : ''}` : `<p class="hint">${state === 'maintenance' ? 'หยุดใช้ชั่วคราว' : 'ยังไม่มีรันรอเริ่ม'}</p>`}</div>
-      <div class="machine-action">${run ? `<a class="button" href="${runLink(run)}">เปิดรัน</a>` : state === 'maintenance' ? '' : `<button class="button" data-action="create" data-template="spray" data-machine="${e(machine.id)}">สร้างรัน</button>`}</div></li>`).join('')}</ul>`
+      <div class="machine-action actions">${run ? `<a class="button" href="${runLink(run)}">เปิดรัน</a>` : state === 'maintenance' ? '' : `<button class="button" data-action="create" data-template="spray" data-machine="${e(machine.id)}">สร้างรัน</button>`}
+      <span class="row-tools"><button class="button icon-tool" data-action="edit-machine" data-machine="${e(machine.id)}" aria-label="แก้ไขเครื่อง ${e(machine.id)}" title="แก้ไขเครื่อง"></button>
+      <button class="button icon-tool" data-action="delete-machine" data-machine="${e(machine.id)}" aria-label="ลบเครื่อง ${e(machine.id)}" title="ลบเครื่อง"></button></span></div></li>`).join('')}</ul>`
       : '<div class="empty"><p>ไม่พบเครื่องที่ตรงกับตัวกรอง</p><button class="button" data-action="clear-machine-filter">ล้างตัวกรอง</button></div>'}`;
 }
 
@@ -156,11 +161,14 @@ function etaMarkup(run, compact = false) {
   if (!result) return '';
   const value = result.l1 === null ? 'ยังไม่มีค่า' : result.l1 === 0 ? 'ป้อนครบตามที่บันทึก' : `อีก ${result.l1} นาที`;
   const l2 = result.l2 ? `<p class="hint">L2 · เวลาป้อนทั้งหมดของรันย้อนหลัง ${result.l2.join('–')} นาที <span class="source">Assumed</span></p>` : '';
-  return `<div class="eta"><strong>${value}</strong> <span class="source">${result.l1 === null ? 'Missing' : result.l1 === 0 ? run.demo ? 'Assumed' : 'Observed' : 'Calculated'}</span>${compact ? '' : '<p class="hint">L1 · จากปริมาตรคงเหลือและอัตราป้อนจริง</p>' + l2}</div>`;
+  return `<div class="eta"><strong>${result.l1 === null ? 'ยังประมาณไม่ได้' : value}</strong> <span class="source">${run.demo ? 'ข้อมูลจำลอง' : result.l1 === null ? 'ข้อมูลไม่ครบ' : 'ค่าคำนวณ'}</span>${compact ? '' : '<p class="hint">จากปริมาตรคงเหลือและอัตราป้อนที่บันทึก</p>' + l2}</div>`;
 }
 
+const alertSources = { all: 'ทั้งหมด', system: 'ระบบ', run: 'การทดลอง', calendar: 'ปฏิทินแล็บ' };
+let alertSource = 'all';
+
 function alerts() {
-  return experiments.flatMap((run) => {
+  const runEvents = experiments.flatMap((run) => {
     const events = [];
     if (labWorkspace.preferences.feedAlerts && run.template === 'spray' && run.before.volume > 0) {
       const reached = run.logs.find((entry) => entry.data.volume >= run.before.volume);
@@ -169,17 +177,47 @@ function alerts() {
     if (labWorkspace.preferences.resultAlerts && run.status === 'results') {
       events.push({ key: `${run.id}:results`, text: 'รอกรอกผลแล็บ', detail: 'เปิดรันเพื่อบันทึกข้อมูลหลังทดลอง', time: run.feedEndedAt || run.stageChangedAt || run.createdAt, run });
     }
-    return events;
-  }).sort((a, b) => b.time.localeCompare(a.time));
+    return events.map(event => ({ ...event, source: 'run', href: runLink(run), text: `${run.id} · ${event.text}` }));
+  });
+  const today = labDate();
+  const tomorrow = calendarDay(today);
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  const upcomingDates = [today, dateKey(tomorrow)];
+  const calendarEvents = visitList().filter(visit => upcomingDates.includes(visit.date)).flatMap(visit => {
+    const start = new Date(`${visit.date}T${visit.start}+07:00`);
+    if (!Number.isFinite(start.getTime())) return [];
+    return [{
+      key: `visit:${visit.id}:${visit.date}:${visit.start}`, source: 'calendar',
+      href: `#calendar?date=${encodeURIComponent(visit.date)}`, text: visit.title,
+      detail: 'แผนเข้าแล็บ', time: start.toISOString(),
+    }];
+  });
+  const systemEvents = readFailed || workspaceReadFailed ? [{
+    key: 'system:storage-read', source: 'system', text: 'อ่านข้อมูลในเบราว์เซอร์ไม่ได้',
+    detail: 'ลองโหลดหน้าใหม่เพื่อตรวจสอบอีกครั้ง',
+  }] : [];
+  return [...systemEvents, ...[...runEvents, ...calendarEvents].sort((a, b) => b.time.localeCompare(a.time))];
+}
+
+function visibleAlerts(items) {
+  return items.filter(item => alertSource === 'all' || item.source === alertSource);
 }
 
 function notificationsPage() {
   const items = alerts();
   const unread = items.filter(({ key }) => !labWorkspace.readAlerts.includes(key)).length;
-  return pageHead('แจ้งเตือน', `ยังไม่ได้อ่าน ${unread} รายการ`, unread ? '<button class="button" data-action="read-alerts">ทำเครื่องหมายว่าอ่านทั้งหมด</button>' : '') +
-    `<section class="panel"><div class="panel-head"><h2>กิจกรรมของรัน</h2><a class="button" href="#settings">ตั้งค่าการแจ้งเตือน</a></div>
-    ${items.length ? `<ul class="alert-list">${items.map(({ key, text, detail, time, run }) =>
-      `<li><a href="${runLink(run)}" data-alert-key="${e(key)}"><div><strong>${e(run.id)} · ${text}</strong><p class="muted">${detail}</p></div><small>${timeLabel(time)}${labWorkspace.readAlerts.includes(key) ? '' : ' · ยังไม่อ่าน'}</small></a></li>`).join('')}</ul>` : '<p class="empty">เมื่อป้อนครบหรือจบการทดลอง รายการจะแสดงที่นี่ตามการตั้งค่า</p>'}</section>`;
+  const visible = visibleAlerts(items);
+  const hasUnread = visible.some(({ key }) => !labWorkspace.readAlerts.includes(key));
+  return pageHead('แจ้งเตือน', `ยังไม่ได้อ่าน ${unread} รายการ`) +
+    `<section class="panel alert-panel"><div class="alert-toolbar">
+      <div class="alert-filters" role="group" aria-label="กรองตามแหล่งแจ้งเตือน">${Object.entries(alertSources).map(([key, label]) =>
+        `<button type="button" class="button subtle" data-action="filter-alerts" data-source="${key}" aria-pressed="${alertSource === key}">${label}</button>`).join('')}</div>
+      ${hasUnread ? `<button type="button" class="button subtle" data-action="read-alerts">${alertSource === 'all' ? 'อ่านทั้งหมด' : 'อ่านที่แสดงทั้งหมด'}</button>` : ''}
+    </div><p class="alert-count hint" role="status">แสดง ${visible.length} รายการ</p>
+    ${visible.length ? `<ul class="alert-list">${visible.map(({ key, text, detail, time, href, source }) => {
+      const content = `<div><strong>${e(text)}</strong><p class="hint">${alertSources[source]} · ${e(detail)}</p></div><small>${time ? timeLabel(time) : ''}${labWorkspace.readAlerts.includes(key) ? '' : `${time ? ' · ' : ''}ยังไม่อ่าน`}</small>`;
+      return `<li>${href ? `<a class="alert-row" href="${e(href)}" data-alert-key="${e(key)}">${content}</a>` : `<div class="alert-row">${content}</div>`}</li>`;
+    }).join('')}</ul>` : '<p class="empty">ยังไม่มีแจ้งเตือนในหมวดนี้</p>'}</section>`;
 }
 
 function settingsPage() {
@@ -203,12 +241,20 @@ const machineForm = document.querySelector('#machine-form');
 const machineName = machineForm.elements.name;
 const machineError = document.querySelector('#machine-error');
 
-function showMachine() {
+let editingMachine = null;
+
+function showMachine(id) {
+  editingMachine = labWorkspace.machines.find(machine => machine.id === id) ?? null;
+  if (id && !editingMachine) return;
   machineForm.reset();
+  machineName.value = editingMachine?.name ?? '';
+  document.querySelector('#machine-title').textContent = editingMachine ? 'แก้ไขเครื่อง' : 'เพิ่มเครื่องใหม่';
+  machineForm.querySelector('.primary').textContent = editingMachine ? 'บันทึกการแก้ไข' : 'เพิ่มเครื่อง';
+  machineForm.querySelector('[data-action="delete-machine"]').hidden = !editingMachine;
   machineName.removeAttribute('aria-invalid');
   machineError.hidden = true;
-  document.querySelector('#machine-count').textContent = '0/40';
-  document.querySelector('#machine-preview').innerHTML = machineSticker(machineId(labWorkspace.nextMachine), true);
+  document.querySelector('#machine-count').textContent = `${[...machineName.value].length}/40`;
+  document.querySelector('#machine-preview').innerHTML = machineSticker(editingMachine?.id ?? machineId(labWorkspace.nextMachine), !editingMachine);
   machineDialog.showModal();
 }
 
@@ -232,7 +278,12 @@ machineForm.addEventListener('submit', async (event) => {
   if (submit.disabled) return;
   submit.disabled = true;
   let added;
+  const original = editingMachine;
   const saved = await updateWorkspace((state) => {
+    if (original) {
+      if (!machineMatches(state, original)) return null;
+      return { ...state, machines: state.machines.map(machine => machine.id === original.id ? { ...machine, name } : machine) };
+    }
     if (!Number.isSafeInteger(state.nextMachine)) throw new Error('Invalid machine counter');
     added = machineId(state.nextMachine);
     return { ...state, nextMachine: state.nextMachine + 1,
@@ -242,8 +293,36 @@ machineForm.addEventListener('submit', async (event) => {
   if (!saved) return;
   machineDialog.close();
   render(true);
-  message(`เพิ่มเครื่อง ${added} แล้ว`);
+  message(original ? 'บันทึกชื่อเครื่องแล้ว' : `เพิ่มเครื่อง ${added} แล้ว`);
 });
+
+function machineMatches(state, original) {
+  if (JSON.stringify(state.machines.find(machine => machine.id === original.id)) === JSON.stringify(original)) return true;
+  message('ข้อมูลเครื่องเปลี่ยนจากอีกแท็บ กรุณาปิดแล้วเปิดใหม่');
+  return false;
+}
+
+async function deleteMachine(id) {
+  const original = id ? labWorkspace.machines.find(machine => machine.id === id) : editingMachine;
+  if (!original || !await confirmDeletion(`ลบเครื่อง ${original.id} · ${original.name}?`,
+    'เครื่องนี้จะหายจากทะเบียนและตัวเลือกตอนสร้างรัน หากมีรันอ้างอิง ระบบจะเก็บเครื่องไว้')) return;
+  const saved = await updateWorkspace((state) => {
+    if (!machineMatches(state, original)) return null;
+    if (readRuns().some(run => run.before.machine === original.id) || readFailed) {
+      message('ลบเครื่องไม่ได้ เครื่องนี้มีข้อมูลรันอ้างอิงหรือเปิดข้อมูลรันไม่ได้');
+      return null;
+    }
+    const preferences = state.preferences.defaultMachine === original.id
+      ? { ...state.preferences, defaultMachine: '' } : state.preferences;
+    return { ...state, preferences, machines: state.machines.filter(machine => machine.id !== original.id) };
+  });
+  if (saved) {
+    if (machineDialog.open) machineDialog.close();
+    if (route().name === 'machines') refreshMachineResults();
+    main.focus({ preventScroll: true });
+    message(`นำเครื่อง ${original.id} ออกจากทะเบียนแล้ว`);
+  }
+}
 
 async function markAlerts(keys, updateView = true) {
   const saved = await updateWorkspace((state) => ({ ...state, readAlerts: [...new Set([...state.readAlerts, ...keys])] }));
