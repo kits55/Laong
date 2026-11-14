@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { Workspace } from "./workspace";
 import "./shell.css";
 
-const source = readFileSync(join(process.cwd(), "public/laong-assets/index.html"), "utf8");
-const surface = source.split("<body>")[1].split("</body>")[0].replaceAll('src="icons/', 'src="/laong-assets/icons/');
+const surface = process.env.LAONG_WORKSPACE_BODY!;
 
 export const metadata: Metadata = {
   title: "Laong · สมุดบันทึกการทดลอง",
