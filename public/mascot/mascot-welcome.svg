@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 228" role="img" aria-label="Nong Laong welcome">
+<ellipse cx="100" cy="220" rx="52" ry="5" fill="#173B46" opacity=".08"/>
+<path d="M100 18C100 18 30 98 30 144a70 70 0 0 0 140 0C170 98 100 18 100 18Z" fill="#A7DED9"/>
+<circle cx="70" cy="112" r="7" fill="#D2F0ED"/>
+<circle cx="56" cy="130" r="4" fill="#D2F0ED"/>
+<ellipse cx="64" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<ellipse cx="136" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<path d="M72 146Q80 136 88 146M112 146Q120 136 128 146" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M88 164Q100 175 112 164" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M48 158Q26 156 17 138m137 20q23-2 34-20" fill="none" stroke="#407D7C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="16" cy="136" rx="6" ry="8" fill="#407D7C"/>
+<ellipse cx="189" cy="136" rx="6" ry="8" fill="#407D7C"/>
+<path d="M42 72l2.4 7.6 7.6 2.4 -7.6 2.4 -2.4 7.6 -2.4 -7.6 -7.6 -2.4 7.6 -2.4Z" fill="#0F766E"/>
+<path d="M169 64l2.88 9.120000000000001 9.120000000000001 2.88 -9.120000000000001 2.88 -2.88 9.120000000000001 -2.88 -9.120000000000001 -9.120000000000001 -2.88 9.120000000000001 -2.88Z" fill="#0F766E"/>
+</svg>

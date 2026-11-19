@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 228" role="img" aria-label="Nong Laong surprised">
+<ellipse cx="100" cy="220" rx="52" ry="5" fill="#5DC3CA" opacity=".17"/>
+<g transform="translate(100 214) scale(.92 1.07) translate(-100 -214)">
+<path d="M100 18C100 18 30 98 30 144a70 70 0 0 0 140 0C170 98 100 18 100 18Z" fill="#A7DED9"/>
+<circle cx="70" cy="112" r="7" fill="#D2F0ED"/>
+<circle cx="56" cy="130" r="4" fill="#D2F0ED"/>
+<ellipse cx="64" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<ellipse cx="136" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<circle cx="80" cy="144" r="10" fill="#173B46"/>
+<circle cx="120" cy="144" r="10" fill="#173B46"/>
+<ellipse cx="100" cy="170" rx="12" ry="15" fill="#173B46"/>
+</g>
+<path d="M36 106l-11-9m147 9 11-9" fill="none" stroke="#5DC3CA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

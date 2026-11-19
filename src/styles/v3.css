@@ -1,0 +1,251 @@
+/* =====================================================================
+   รอบ 3: ปรับให้โปร สงบ ไม่เบียด (โหลดหลัง app.css จึงทับกฎเดิมได้)
+   หลักการ: ขอบน้อยลง (ใช้ชั้นสีแทนเส้น), ช่องไฟเยอะขึ้น, ของที่ไม่ค่อยใช้พับหรือรวมเป็นแท็บ,
+   จอแคบเรียงเป็นรายการสั้น ไม่เป็นกล่องซ้อนกล่อง ใช้ token เดิมทั้งหมด
+   ===================================================================== */
+
+.only-wide { display: none; }
+.only-narrow { display: flex; }
+@container ldshell (min-width: 700px) {
+  .only-wide { display: inline-flex; }
+  .only-narrow { display: none !important; }
+}
+
+/* ----- จังหวะหน้า ----- */
+.ld-shell__main { gap: var(--space-4); padding-top: var(--space-4); }
+.page { gap: var(--space-5); }
+@container ldshell (min-width: 700px) {
+  .ld-shell__main { padding: var(--space-5) var(--space-6) 56px; gap: var(--space-5); }
+  .page { gap: var(--space-6); }
+}
+@container ldshell (min-width: 1000px) {
+  .ld-shell__main { padding: var(--space-5) var(--space-7) 64px; max-width: 1120px; }
+}
+.pagehead { padding-top: 0; }
+.h1 { font: 600 24px/32px var(--font-sans); }
+@container ldshell (min-width: 700px) { .h1 { font: 600 28px/36px var(--font-sans); } }
+.lead { font: 400 15px/24px var(--font-sans); }
+
+/* ----- แถบนำทางซ้าย: เบา มีเส้นเชื่อมขั้น บอกความคืบหน้า ----- */
+@container ldshell (min-width: 1000px) {
+  .ld-steps { padding: var(--space-5) var(--space-4); gap: var(--space-5); background: var(--surface-100); }
+  .rail-brand { padding: var(--space-1) var(--space-2) var(--space-4); }
+  .ld-steps ol { gap: 2px; }
+  .ld-steps li { position: relative; }
+  .ld-step { min-height: 48px; padding: 0 var(--space-3); gap: var(--space-3); border-left: 0; border-radius: 10px; font: 500 15px/22px var(--font-sans); }
+  .ld-step[data-state="current"] { border-left: 0; min-height: 56px; }
+  .ld-step__n { width: 26px; height: 26px; font-size: 12px; background: var(--surface-100); position: relative; z-index: 1; }
+  .ld-step[data-state="current"] .ld-step__n { background: var(--brand); }
+  .ld-step[data-state="done"] .ld-step__n { background: var(--ok-soft); }
+  .ld-step__sub { display: none; font-weight: 400; }
+  .ld-step[data-state="current"] .ld-step__sub { display: block; }
+  .ld-steps li:not(:last-child)::before { content: ""; position: absolute; left: 24px; top: calc(100% - 11px); width: 2px; height: 22px; background: var(--line); z-index: 0; }
+  .ld-steps li[data-done="true"]:not(:last-child)::before { background: var(--ok-ink); }
+  .rail-foot { padding: var(--space-3) var(--space-2) 0; }
+}
+.ld-step[data-state="todo"] { color: var(--ink-muted); }
+
+/* ----- หัวหน้า ----- */
+.apphead { gap: var(--space-2) var(--space-3); justify-content: flex-start; flex-wrap: wrap; }
+.databar { order: 3; flex: 1 1 100%; gap: var(--space-1) var(--space-2); }
+.databar .ld-chip { font-size: 12px; line-height: 18px; padding-block: 0; }
+.apphead__right { margin-left: auto; flex-wrap: nowrap; gap: var(--space-2); }
+.apphead__brand { margin-right: auto; }
+@container ldshell (min-width: 700px) {
+  .databar { order: 0; flex: 0 1 auto; margin-left: var(--space-2); }
+  .apphead__brand { margin-right: 0; }
+  .apphead { flex-wrap: nowrap; }
+}
+@container ldshell (min-width: 1000px) { .databar { margin-left: 0; } }
+.iconbtn { width: var(--touch); padding: 0; }
+.machinepick { position: relative; display: none; }
+@container ldshell (min-width: 700px) { .machinepick { display: block; } }
+.machinepick .ld-select { appearance: none; padding-inline: var(--space-3); padding-right: var(--space-5); font-size: 16px; }
+.machinepick::after { content: "▾"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-muted); font-size: 14px; pointer-events: none; }
+
+.usermenu { position: relative; }
+.usermenu__btn { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--touch); padding: 0 var(--space-3) 0 6px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); background: var(--surface-200); color: var(--ink); font: 500 15px/20px var(--font-sans); cursor: pointer; }
+.usermenu__btn:hover { background: var(--surface-300); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font: 600 15px/1 var(--font-sans); }
+.usermenu__name { display: none; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@container ldshell (min-width: 1000px) { .usermenu__name { display: inline; } }
+.usermenu__panel { position: absolute; z-index: 30; right: 0; top: calc(100% + 8px); width: min(300px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 2px; padding: var(--space-2); background: var(--surface-200); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16); animation: resultIn 160ms cubic-bezier(.2,.8,.2,1) both; }
+.usermenu__who { display: flex; flex-direction: column; padding: var(--space-2) var(--space-3) var(--space-3); border-bottom: 1px solid var(--line); margin-bottom: var(--space-1); }
+.usermenu__who strong { font: 600 16px/24px var(--font-sans); }
+.usermenu__who span { font: 400 13px/20px var(--font-sans); color: var(--ink-muted); }
+.usermenu__machine { flex-direction: column; gap: var(--space-1); padding: var(--space-1) var(--space-3) var(--space-3); }
+.usermenu__item { display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink); font: 500 15px/22px var(--font-sans); text-decoration: none; cursor: pointer; width: 100%; text-align: left; }
+.usermenu__item:hover { background: var(--surface-300); }
+.usermenu__item[aria-current="page"] { background: var(--brand-soft); color: var(--brand-ink); }
+.usermenu__item.only-narrow { display: flex; }
+@container ldshell (min-width: 700px) { .usermenu__item.only-narrow { display: none; } }
+
+/* ----- กล่อง: เส้นบาง ไม่มีเงา ช่องไฟกว้าง หัวไม่มีเส้นคั่น ----- */
+.ld-panel { box-shadow: none; border-radius: 14px; }
+.ld-panel__head { border-bottom: 0; padding: var(--space-4) var(--space-4) 0; }
+.ld-panel__title { font: 600 18px/26px var(--font-sans); }
+.ld-panel__body { padding: var(--space-3) var(--space-4) var(--space-4); gap: var(--space-4); }
+details.ld-panel > summary { min-height: 56px; padding: var(--space-2) var(--space-4); font: 600 16px/24px var(--font-sans); }
+details.ld-panel[open] > summary { border-bottom: 0; }
+details.ld-panel[open] > .ld-panel__body { padding-top: 0; }
+@container ldshell (min-width: 700px) {
+  .ld-panel__head { padding: var(--space-5) var(--space-5) 0; }
+  .ld-panel__body { padding: var(--space-3) var(--space-5) var(--space-5); gap: var(--space-5); }
+  details.ld-panel > summary { padding: var(--space-2) var(--space-5); font-size: 17px; }
+}
+
+/* ----- แจ้งเตือน: ไม่มีกรอบสี (ยกเว้น error และ UNVALIDATED ที่ต้องเด่น) ----- */
+.ld-notice { padding: var(--space-3) var(--space-4); }
+.ld-notice:is([data-kind="info"], [data-kind="ok"], [data-kind="warn"]) { border-color: transparent; }
+.ld-notice__title { font: 600 15px/24px var(--font-sans); }
+
+/* ----- การ์ดตัวเลข: เป็นแผ่นสีอ่อนในกล่อง ไม่มีกรอบซ้อน ----- */
+.ld-panel .ld-metric, .report-sheet .ld-metric { background: var(--surface-100); border: 0; padding: var(--space-3) var(--space-4); }
+.ld-metric__label { font: 500 13px/20px var(--font-sans); }
+.ld-metric__value { font-size: 26px; line-height: 32px; }
+.ld-metric--hero, .ld-panel .ld-metric--hero { background: var(--brand-soft); border: 0; }
+.ld-metric--hero .ld-metric__value { font-size: 40px; line-height: 48px; color: var(--brand-ink); }
+.ld-metric--hero .ld-metric__label, .ld-metric--hero .ld-metric__unit { color: var(--brand-ink); }
+.result-grid { gap: var(--space-3); }
+@container ldshell (min-width: 700px) { .result-grid { gap: var(--space-4); } }
+
+/* จอแคบ: ตัวเลข 3 ค่าเรียงเป็นรายการสั้น ซ้ายชื่อ ขวาค่าและป้าย ถ้ามากกว่า 3 ค่าใช้แผ่นสองคอลัมน์ */
+@container ldshell (max-width: 699px) {
+  .result-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .result-grid > .ld-metric { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "l v m" "h h h"; align-items: center; gap: 0 var(--space-3); padding: var(--space-2) 0; min-height: 52px; border-radius: 0; background: transparent; border-bottom: 1px solid var(--line); }
+  .ld-panel .result-grid > .ld-metric, .report-sheet .result-grid > .ld-metric { background: transparent; padding-inline: 0; }
+  .result-grid > .ld-metric:last-child { border-bottom: 0; }
+  .result-grid > .ld-metric > .ld-metric__label { grid-area: l; }
+  .result-grid > .ld-metric > div:not(.ld-metric__meta):not(.ld-hint):not(.ld-metric__empty) { grid-area: v; text-align: right; }
+  .result-grid > .ld-metric > .ld-metric__empty { grid-area: v; text-align: right; font-size: 14px; }
+  .result-grid > .ld-metric > .ld-metric__meta { grid-area: m; justify-content: flex-end; }
+  .result-grid > .ld-metric > .ld-hint { grid-area: h; margin-top: -2px; }
+  .result-grid > .ld-metric .ld-metric__value { font-size: 22px; line-height: 28px; }
+  .result-grid:has(> :nth-child(4)) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .result-grid:has(> :nth-child(4)) > .ld-metric,
+  .ld-panel .result-grid:has(> :nth-child(4)) > .ld-metric { display: flex; flex-direction: column; align-items: stretch; padding: var(--space-3); border-bottom: 0; border-radius: var(--radius-md); background: var(--surface-100); }
+  .result-grid:has(> :nth-child(4)) > .ld-metric > div:not(.ld-metric__meta) { text-align: left; }
+  .result-grid:has(> :nth-child(4)) > .ld-metric > .ld-metric__meta { justify-content: flex-start; }
+  .ld-metric--hero .ld-metric__value { font-size: 32px; line-height: 40px; }
+}
+
+/* ----- หัวภาพรวม: กระชับ เน้นงานถัดไปงานเดียว ----- */
+.hero { padding: var(--space-5) var(--space-4); gap: var(--space-4); }
+.hero__greet { font: 600 26px/34px var(--font-sans); }
+.hero .lead { font-size: 15px; line-height: 24px; max-width: 48ch; }
+.hero__cta .ld-btn--primary { min-height: 48px; font-size: 16px; }
+.hero__cta { gap: var(--space-2); }
+@container ldshell (max-width: 699px) { .hero__cta .ld-btn { flex: 1 1 auto; } .hero__art { opacity: 0.22; } }
+@container ldshell (min-width: 700px) { .hero { padding: var(--space-6); grid-template-columns: minmax(0, 1fr) auto; align-items: end; } .hero__greet { font: 600 30px/40px var(--font-sans); } }
+.grid-2--tight { align-items: start; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+
+.upnext { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.upnext li { display: flex; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
+.upnext li:last-child { border-bottom: 0; }
+.upnext__ic { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--surface-100); color: var(--ink-muted); display: inline-flex; align-items: center; justify-content: center; }
+.upnext__t { display: flex; flex-direction: column; min-width: 0; }
+.upnext__t strong { font: 600 15px/22px var(--font-sans); }
+.upnext__t span { font: 400 14px/22px var(--font-sans); color: var(--ink-muted); }
+.upnext__t .cap { font-size: 13px; }
+
+/* ----- แท็บแบบแถบสลับ ----- */
+.pilltabs { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 2px; padding: 4px; background: var(--surface-300); border-radius: 12px; }
+.pilltab { min-height: 44px; padding: 0 var(--space-2); border: 0; border-radius: 9px; background: transparent; color: var(--ink-muted); font: 500 14px/20px var(--font-sans); cursor: pointer; transition: background-color 160ms ease, color 160ms ease; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); }
+.pilltab:hover { color: var(--ink); }
+.pilltab[aria-selected="true"] { background: var(--surface-200); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14); }
+.pilltab__b { font: 500 12px/18px var(--font-mono); color: var(--ink-muted); }
+.tabpanel { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; animation: resultIn 180ms cubic-bezier(.2,.8,.2,1) both; }
+@container ldshell (min-width: 700px) { .pilltab { font-size: 15px; } }
+
+/* ----- ตาราง ----- */
+@container ldshell (max-width: 699px) { .ld-table--cards td.hide-narrow { display: none; } }
+.ld-table th { background: var(--surface-100); }
+.ld-table td .cap { display: block; }
+
+/* ----- กราฟ: กล่องข้อความเมื่อชี้ แอนิเมชันเข้าครั้งเดียว ----- */
+.chart__box { position: relative; }
+.chart__box svg { display: block; border-radius: 8px; touch-action: pan-y; }
+.chart__box svg:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.chart__guide { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+.chart__area { opacity: 0; animation: areaIn 600ms ease 500ms forwards; }
+.chart__pt { animation: ptIn 360ms cubic-bezier(.2,.8,.2,1) var(--d, 300ms) both; }
+.chart__gridg { animation: fadeIn 500ms ease both; }
+.chart__band { transform-box: fill-box; transform-origin: center; animation: bandIn 700ms cubic-bezier(.2,.8,.2,1) 150ms both; }
+.chart__link { animation: fadeIn 300ms ease calc(var(--d, 0ms) + 350ms) both; }
+.chart__tip { position: absolute; top: 4px; transform: translateX(-50%); z-index: 3; min-width: 168px; max-width: 220px; padding: var(--space-2) var(--space-3); border-radius: 10px; background: var(--ink); color: var(--surface-200); font: 400 13px/20px var(--font-sans); pointer-events: none; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); animation: fadeIn 100ms ease both; }
+.chart__tip strong { display: block; font: 600 13px/20px var(--font-sans); margin-bottom: 2px; }
+.chart__tiprow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--space-2); align-items: baseline; }
+.chart__tiprow .ld-num { font-size: 14px; font-weight: 500; }
+.chart__tipk { font-size: 11px; opacity: 0.75; }
+@keyframes areaIn { to { opacity: 0.1; } }
+@keyframes ptIn { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: scale(1); } }
+@keyframes bandIn { from { opacity: 0; transform: scaleY(0.2); } to { opacity: 1; transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .chart__area { opacity: 0.1; } }
+
+/* ----- รายการอื่น ----- */
+.todo li { min-height: 52px; }
+.kv { gap: var(--space-3) var(--space-4); }
+.seg__opt { min-height: 52px; }
+
+/* ----- ชิ้นส่วนที่เพิ่มในรอบนี้ ----- */
+.form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--nowrap { flex-wrap: nowrap; align-items: flex-end; }
+.pointform { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pointform--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@container ldshell (min-width: 700px) { .pointform--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.only-wide-block { display: none; }
+@container ldshell (min-width: 700px) { .only-wide-block { display: block; } }
+.only-narrow-block { display: none; }
+@container ldshell (max-width: 699px) { .only-narrow-block { display: block; } }
+
+/* ตัวจับเวลาให้เด่นแต่ไม่ล้น */
+.timer { font-size: 48px; line-height: 56px; }
+@container ldshell (min-width: 700px) { .timer { font-size: 60px; line-height: 68px; } }
+.ctl-row .ld-btn { min-height: 48px; font-size: 16px; }
+.seglist li { font-size: 13px; padding: 2px var(--space-3); }
+
+/* รายการพับแบบเบา ใช้ในกล่องปิดรัน (ไม่มีกรอบซ้อน) */
+.inline-list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.inline-details { border-bottom: 1px solid var(--line); }
+.inline-details > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 52px; cursor: pointer; list-style: none; font: 500 16px/24px var(--font-sans); }
+.inline-details > summary::-webkit-details-marker { display: none; }
+.inline-details > summary::after { content: "▾"; color: var(--ink-muted); margin-left: var(--space-2); }
+.inline-details[open] > summary::after { content: "▴"; }
+.inline-details > summary > span:first-child { flex: 1; }
+.inline-details__body { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 0 var(--space-4); }
+.inline-details::details-content { block-size: 0; overflow: clip; transition: block-size 200ms cubic-bezier(.2,.8,.2,1), content-visibility 200ms allow-discrete; }
+.inline-details[open]::details-content { block-size: auto; }
+
+/* หัวกล่องบนจอแคบ: ชื่อกับปุ่มอยู่บรรทัดเดียว */
+@container ldshell (max-width: 699px) {
+  .ld-panel__head { flex-wrap: nowrap; align-items: center; }
+  .ld-panel__title { min-width: 0; overflow-wrap: anywhere; }
+  .panel-actions { flex: none; }
+  .ld-panel__head .ld-btn--quiet { padding-inline: var(--space-2); }
+  .ld-metric__meta { flex-wrap: nowrap; }
+}
+
+.field-top { flex-wrap: nowrap; }
+.field-top .ld-label { min-width: 0; }
+.seg__opt { flex: 1 1 0; min-width: 92px; }
+.seg__row { gap: var(--space-2); }
+
+.strip { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-1) var(--space-2) var(--space-1) var(--space-4); background: var(--brand-soft); color: var(--brand-ink); border-radius: var(--radius-lg); font: 400 14px/22px var(--font-sans); }
+.strip .ld-btn { flex: none; }
+
+/* ประวัติบนจอแคบ: การ์ดกระชับ ชื่อรันกับปุ่มอยู่บนสุด ตัวเลข 3 ค่าเรียงข้างกัน */
+@container ldshell (max-width: 699px) {
+  .hist-table tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; padding: var(--space-3); }
+  .hist-table td { display: block; padding: 0; text-align: left; }
+  .hist-table td::before { display: block; margin-bottom: 2px; font-size: 12px; line-height: 18px; }
+  .hist-table td[data-label="รัน"] { grid-column: 1 / span 2; }
+  .hist-table td[data-label="รัน"]::before { display: none; }
+  .hist-table td[data-label="เปิด"] { grid-column: 3; grid-row: 1; justify-self: end; align-self: start; }
+  .hist-table td[data-label="เปิด"]::before { display: none; }
+  .hist-table td.ld-num { text-align: left; }
+  .hist-table td .val, .hist-table td .missing { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+@container ldshell (max-width: 699px) {
+  .hist-table tr[data-selected="true"] { background: var(--brand-soft); }
+  .hist-table tr[data-selected="true"] td { background: transparent; }
+}

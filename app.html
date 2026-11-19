@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102126">
+  <title>LaOng · สมุดบันทึกการทดลอง</title>
+  <link rel="icon" href="laong-assets/icons/laong.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="laong-assets/tokens.css">
+  <link rel="stylesheet" href="laong-assets/styles.css">
+  <link rel="stylesheet" href="laong-assets/monitor.css">
+  <link rel="stylesheet" href="laong-assets/admin.css">
+  <script>
+    // ยังไม่เข้าสู่ระบบ: กลับไปหน้าเข้าสู่ระบบก่อนโหลดพื้นที่ทำงาน
+    try { if (!localStorage.getItem('proto_session') || localStorage.getItem('proto_session') === 'null') location.replace('./#/login'); } catch (e) { /* เปิดต่อได้ */ }
+    if (!location.hash || location.hash === '#') history.replaceState(null, '', '#today');
+  </script>
+</head>
+<body>
+  <div id="workspace-root"></div>
+  <script type="module" src="/src/workspace/main.tsx"></script>
+</body>
+</html>

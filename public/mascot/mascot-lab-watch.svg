@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 228" role="img" aria-label="Nong Laong lab-watch">
+<ellipse cx="100" cy="220" rx="52" ry="5" fill="#173B46" opacity=".08"/>
+<path d="M32 138v51h79m-68 0-7 27m64-27 7 27" fill="none" stroke="#966A42" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 189h78" fill="none" stroke="#EAB573" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(9 54) scale(.66)">
+<path d="M100 18C100 18 30 98 30 144a70 70 0 0 0 140 0C170 98 100 18 100 18Z" fill="#A7DED9"/>
+<circle cx="70" cy="112" r="7" fill="#D2F0ED"/>
+<circle cx="56" cy="130" r="4" fill="#D2F0ED"/>
+<ellipse cx="64" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<ellipse cx="136" cy="162" rx="9" ry="7" fill="#F4B860"/>
+<circle cx="85" cy="144" r="6.5" fill="#173B46"/>
+<circle cx="125" cy="144" r="6.5" fill="#173B46"/>
+<path d="M88 164Q100 175 112 164" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path d="M125 115q0-7 7-7h63v87h-70Z" fill="#397487"/>
+<path d="M134 123h50v45h-50Z" fill="#173B46"/>
+<circle cx="175" cy="178" r="4" fill="#D2F0ED"/>
+<path d="M136 198v13m50-13v13" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

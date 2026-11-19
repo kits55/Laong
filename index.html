@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>LaOng · SprayDry Copilot</title>
+    <meta name="description" content="LaOng (ละออง): ช่วยจดค่า ทำนาย Tout ก่อนรัน เก็บข้อมูลระหว่างรัน บันทึกผลแล็บ ทบทวนประวัติ และออกรายงาน (ต้นแบบระยะ A ใช้ข้อมูลตัวอย่าง)" />
+    <meta name="theme-color" content="#0a5159" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png" />
+    <script>
+      // ตั้งธีมก่อนวาดหน้า กันภาพวูบสว่างตอนเปิดในโหมดมืด
+      (function () {
+        try {
+          var t = JSON.parse(localStorage.getItem('proto_theme') || '"auto"');
+          var dark = t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="ld-root">
+    <div id="root"></div>
+    <noscript>LaOng ต้องเปิด JavaScript จึงจะใช้งานได้</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

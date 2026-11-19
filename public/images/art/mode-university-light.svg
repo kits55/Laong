@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-label="LaOng mode-university">
+  <path d="M0 0H480V320H0Z" fill="#F5F4EF" />
+  <ellipse cx="239" cy="252" rx="176" ry="16" fill="#CDD0C8" />
+  <path d="M170 177h225q4 0 4 4v5q0 4-4 4h-225q-4 0-4-4v-5q0-4 4-4Z" fill="#0A5159" />
+  <path d="M181 190v50m203-50v50" fill="none" stroke="#063C43" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M211 118h81q6 0 6 6v41q0 6-6 6h-81q-6 0-6-6v-41q0-6 6-6Z" fill="#063C43" />
+  <path d="M214 124h75q3 0 3 3v34q0 3-3 3h-75q-3 0-3-3v-34q0-3 3-3Z" fill="#C8E6E8" />
+  <path d="M199 169h107q3 0 3 3v2q0 3-3 3h-107q-3 0-3-3v-2q0-3 3-3Z" fill="#0A5159" />
+  <path d="M343 138h15v16l13 18h-41l13-18Z" fill="#C8E6E8" />
+  <path d="M340 137h21" fill="none" stroke="#0A5159" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <g transform="translate(68 98) scale(0.68)">
+    <ellipse cx="100" cy="220" rx="52" ry="5" fill="#173B46" opacity=".08" />
+    <path d="M100 18C100 18 30 98 30 144a70 70 0 0 0 140 0C170 98 100 18 100 18Z" fill="#A7DED9" />
+    <circle cx="70" cy="112" r="7" fill="#D2F0ED" />
+    <circle cx="56" cy="130" r="4" fill="#D2F0ED" />
+    <ellipse cx="64" cy="162" rx="9" ry="7" fill="#F4B860" />
+    <ellipse cx="136" cy="162" rx="9" ry="7" fill="#F4B860" />
+    <ellipse cx="80" cy="144" rx="6.5" ry="6.5" fill="#173B46" />
+    <ellipse cx="120" cy="144" rx="6.5" ry="6.5" fill="#173B46" />
+    <path d="M88 164Q100 175 112 164" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M132 174h37v28h-37Z" fill="#397487" />
+    <path d="M139 178v20M145 182h17m-17 5h17" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="m58 47 42-18 42 18-42 18Z" fill="#173B46" />
+    <path d="M76 58l24 10 24-10v13q-24 10-48 0Z" fill="#397487" />
+    <path d="M139 49v20" fill="none" stroke="#397487" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

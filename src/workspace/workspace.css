@@ -1,0 +1,103 @@
+/* โครงพื้นที่ทำงาน คัดจาก laong.vercel.app (stitch-*) ใช้โทเค็นจาก laong-assets/tokens.css
+   ส่วนที่ LaOng เพิ่ม: กลุ่มเมนูพับด้วย CSS ล้วน ปุ่มออกจากระบบ และสถานะกำลังโหลด */
+
+.stitch-frame { display: grid; grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto 1fr; min-height: 100dvh; }
+.stitch-rail { position: sticky; top: 0; grid-area: 1 / 1 / -1; align-self: start; display: flex; flex-direction: column; gap: 20px; height: 100dvh; padding: 24px 16px; overflow-y: auto; color: var(--rail-text); background: #102126; }
+.stitch-header { grid-area: 1 / 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; padding: 8px 28px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.stitch-context { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+.stitch-context strong { color: var(--ink); }
+.stitch-context .stitch-nav-icon { color: var(--muted); }
+.stitch-bell .stitch-nav-icon { color: var(--ink); }
+.stitch-content { min-width: 0; }
+.stitch-loading { margin: 28px 32px; }
+
+.stitch-rail nav { display: grid; gap: 4px; }
+.stitch-rail nav > .nav-link { gap: 12px; padding-inline: 12px; }
+.stitch-rail .nav-link { color: var(--rail-text); transition: background-color 140ms var(--ease), color 140ms var(--ease); }
+.stitch-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 8px; background: none; color: var(--rail-text); text-align: start; cursor: pointer; transition: background-color 140ms var(--ease), color 140ms var(--ease); }
+.stitch-trigger:hover, .stitch-trigger[data-state="open"] { background: var(--rail-hover); color: #fff; }
+.stitch-trigger-label { display: inline-flex; align-items: center; gap: 12px; }
+.stitch-nav-icon { flex: none; color: var(--rail-label); transition: color 140ms var(--ease); }
+.stitch-rail .nav-link[aria-current="page"] .stitch-nav-icon, .stitch-trigger[data-state="open"] .stitch-nav-icon { color: var(--rail-accent); }
+.stitch-chevron { display: inline-flex; transition: transform 200ms var(--ease); }
+.stitch-trigger[data-state="open"] .stitch-chevron { transform: rotate(180deg); }
+.stitch-chevron .stitch-nav-icon { color: currentColor; }
+
+/* กลุ่มพับ: grid-template-rows 0fr ไป 1fr (แบบเดียวกับ Vercel) */
+.stitch-disclosure { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 200ms var(--ease), opacity 200ms var(--ease); }
+.stitch-disclosure[data-open="true"] { grid-template-rows: 1fr; opacity: 1; }
+.stitch-disclosure-inner { min-height: 0; overflow: clip; }
+.stitch-links { margin: 4px 0 8px 20px; padding-inline-start: 8px; border-inline-start: 1px solid var(--nav-border); }
+.stitch-links .nav-link { padding-inline: 13px 8px; font-size: 14px; }
+.stitch-links .nav-link:focus-visible { outline-offset: -3px; }
+
+.stitch-note { display: grid; gap: 12px; margin-top: auto; padding: 16px 8px 0; border-top: 1px solid var(--nav-border); color: var(--rail-label); font-size: 13px; }
+.stitch-out { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; padding: 0 8px; margin-left: -8px; border: 0; border-radius: 8px; background: none; color: var(--rail-text); font: inherit; font-size: 14px; cursor: pointer; transition: background-color 140ms var(--ease), color 140ms var(--ease); }
+.stitch-out:hover { background: var(--rail-hover); color: #fff; }
+.stitch-out .stitch-nav-icon { color: currentColor; }
+.stitch-rail :focus-visible { outline-color: var(--rail-accent); }
+
+.stitch-menu { display: none !important; }
+
+/* พื้นผิวสคริปต์เดิม: ซ่อนเมนูและหัวหน้าเก่า ใช้ของโครงใหม่แทน */
+.stitch-frame .legacy-surface .shell { display: block; min-height: 0; }
+.stitch-frame .legacy-surface .rail, .stitch-frame .legacy-surface .topbar { display: none; }
+.stitch-frame .legacy-surface main { padding-block-start: 28px; }
+
+.stitch-metrics { display: flex; flex-wrap: wrap; align-items: center; margin: 0 0 16px; padding-block: 8px; border-block: 1px solid var(--line); }
+.stitch-metrics div { display: flex; align-items: baseline; gap: 8px; padding-inline: 16px; }
+.stitch-metrics div:first-child { padding-inline-start: 0; }
+.stitch-metrics div + div { border-inline-start: 1px solid var(--line); }
+.stitch-metrics dt { color: var(--muted); font-size: 14px; }
+.stitch-metrics dd { margin: 0; color: var(--teal-dark); font-size: 17px; font-weight: 500; }
+.stitch-frame .monitor-bar { padding-block-end: 12px; border-bottom: 1px solid var(--line); }
+.stitch-frame .monitor-events { border-top: 3px solid var(--teal); }
+.stitch-frame .run-table tr:hover td { background: #f7faf9; }
+.stitch-frame .run-table .mono { white-space: nowrap; }
+
+@media (max-width: 860px) {
+  .stitch-frame { display: flex; flex-direction: column; }
+  .stitch-header { order: -1; padding-inline: 16px; }
+  .stitch-menu { display: inline-flex !important; }
+  .stitch-rail { position: static; height: auto; max-height: 70dvh; }
+  .stitch-rail[data-visible="false"] { display: none; }
+}
+@media (max-width: 480px) {
+  .stitch-metrics div { gap: 4px; padding-inline: 8px; }
+  .stitch-metrics dt { font-size: 13px; }
+}
+/* ===== รอบปรับของ LaOng (ทับไฟล์ของ Codex โดยไม่แก้ไฟล์ต้นฉบับ) ===== */
+
+/* พื้นผิวของเบราว์เซอร์ใช้สีของแบรนด์ */
+html { scrollbar-color: #b9c7c5 transparent; scrollbar-width: thin; }
+input, textarea { caret-color: var(--teal); }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--teal); }
+td, .metrics strong, .preview-stats strong, .eta strong { font-variant-numeric: tabular-nums; }
+
+/* ข้อความยืนยันของ Admin: กรอบบางรอบด้าน แทนแถบสีหนาข้างเดียว */
+.admin-feedback:not(:empty) { border: 1px solid color-mix(in srgb, var(--teal) 28%, transparent); border-left-width: 1px; border-radius: 8px; }
+
+/* ตัวเลขสรุปของหน้าพรีวิว: แถบตัวเลขเส้นบาง แทนกล่องเท่ากันเรียงแถว (ข้อห้ามใน PRODUCT.md) */
+.preview-stats { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 20px; padding-block: 4px; border-block: 1px solid var(--line); }
+.preview-stats > .panel { display: grid; align-content: start; gap: 2px; flex: 1 1 160px; padding: 12px 24px; background: none; border: 0; border-radius: 0; }
+.preview-stats > .panel:first-child { padding-inline-start: 0; }
+.preview-stats > .panel + .panel { border-inline-start: 1px solid var(--line); }
+.preview-stats h2 { font-size: 14px; font-weight: 400; }
+.preview-stats strong { margin-block: 2px; color: var(--teal-dark); font-size: 28px; }
+.preview-stats .source { justify-self: start; }
+
+/* น้องละอองหยุดขยับเมื่อแท็บถูกซ่อน ไม่กินแรงเครื่อง */
+[data-tab-hidden="1"] .mascot-motion, [data-tab-hidden="1"] .mascot-motion * { animation-play-state: paused !important; }
+
+@media (max-width: 860px) {
+  .stitch-rail { align-self: stretch; }
+  .preview-stats > .panel { padding-inline: 16px; }
+}
+@media (max-width: 480px) {
+  .preview-stats > .panel { flex-basis: 50%; padding: 10px 12px; }
+  .preview-stats > .panel:nth-child(odd) { padding-inline-start: 0; border-inline-start: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stitch-disclosure, .stitch-chevron, .stitch-trigger, .stitch-rail .nav-link { transition: none; }
+}

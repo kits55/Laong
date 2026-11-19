@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-label="LaOng mode-company">
+  <path d="M0 0H480V320H0Z" fill="#F5F4EF" />
+  <ellipse cx="239" cy="252" rx="176" ry="16" fill="#CDD0C8" />
+  <path d="M216 76h154q8 0 8 8v79q0 8-8 8h-154q-8 0-8-8v-79q0-8 8-8Z" fill="#FFFFFF" />
+  <path d="M229 96v54h127" fill="none" stroke="#CDD0C8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M248 125h14q3 0 3 3v18q0 3-3 3h-14q-3 0-3-3v-18q0-3 3-3Z" fill="#C8E6E8" />
+  <path d="M280 113h14q3 0 3 3v30q0 3-3 3h-14q-3 0-3-3v-30q0-3 3-3Z" fill="#C8E6E8" />
+  <path d="M312 99h14q3 0 3 3v44q0 3-3 3h-14q-3 0-3-3v-44q0-3 3-3Z" fill="#0A5159" />
+  <ellipse cx="280" cy="195" rx="118" ry="19" fill="#0A5159" />
+  <path d="M215 204v38m125-38v38" fill="none" stroke="#063C43" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  <g transform="translate(68 98) scale(0.68)">
+    <ellipse cx="100" cy="220" rx="52" ry="5" fill="#173B46" opacity=".08" />
+    <path d="M100 18C100 18 30 98 30 144a70 70 0 0 0 140 0C170 98 100 18 100 18Z" fill="#A7DED9" />
+    <circle cx="70" cy="112" r="7" fill="#D2F0ED" />
+    <circle cx="56" cy="130" r="4" fill="#D2F0ED" />
+    <ellipse cx="64" cy="162" rx="9" ry="7" fill="#F4B860" />
+    <ellipse cx="136" cy="162" rx="9" ry="7" fill="#F4B860" />
+    <ellipse cx="80" cy="144" rx="6.5" ry="6.5" fill="#173B46" />
+    <ellipse cx="120" cy="144" rx="6.5" ry="6.5" fill="#173B46" />
+    <path d="M88 164Q100 175 112 164" fill="none" stroke="#173B46" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="m87 177 13 15 13-15" fill="none" stroke="#397487" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M92 190h16v15H92Z" fill="#397487" />
+    <path d="M95 194h10v6H95Z" fill="#FFFFFF" />
+    <circle cx="172" cy="72" r="9" fill="#0F766E" />
+    <circle cx="187" cy="50" r="5.5" fill="#0F766E" />
+    <circle cx="195" cy="32" r="3.2" fill="#0F766E" />
+    <path d="M142 170h52l-9 29h-52Zm-12 30h58v5h-63Z" fill="#173B46" />
+    <circle cx="164" cy="185" r="3" fill="#FFFFFF" />
+  </g>
+</svg>

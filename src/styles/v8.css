@@ -1,0 +1,197 @@
+/* v8: ให้หน้าตาและโครงเหมือนเวอร์ชัน Vercel (laong.vercel.app) ที่ผู้ใช้ชอบ
+   เมนูซ้ายเขียวเข้มแบบกลุ่ม หัวหน้าขาวมีแถบตำแหน่ง พื้นเทาอ่อน การ์ดขาวขอบบาง ตารางเรียบ ปุ่มหลักสีเขียวหนึ่งปุ่ม
+   แล้วเสริมการเคลื่อนไหวที่อธิบายสถานะ: ไฮไลต์เมนูเลื่อนตามหน้า แถวตารางไล่ขึ้น ตัวเลขนับขึ้นครั้งเดียว
+   ไม่มีอนิเมชันวน ตัดทั้งหมดเมื่อผู้ใช้ตั้ง reduced motion */
+
+/* ---------- โทเค็น: ค่าเดียวกับเวอร์ชัน Vercel (ธีมสว่าง) ---------- */
+:root { --font-sans: "Anuphan", "Sarabun", system-ui, sans-serif; --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace; --ease: cubic-bezier(0.22, 1, 0.36, 1); --radius-lg: 16px; }
+:root:not([data-theme="dark"]) {
+  --surface-100: #f4f6f6; --surface-200: #ffffff; --surface-300: #edf1f1; --panel-alt: #f8fafa;
+  --ink: #15262b; --ink-muted: #52646a; --line: #dce3e2;
+  --brand: #0a6e69; --brand-ink: #07524f; --brand-soft: #e6f0ee; --on-brand: #ffffff;
+  --shadow-1: none;
+  --rail-bg: #102126; --rail-ink: #c9d6d8; --rail-mute: #9fb1b5; --rail-hi: #1f343a; --rail-line: #31464b; --rail-accent: #3fb8ac;
+}
+[data-theme="dark"] {
+  --panel-alt: #1b2629; --shadow-1: none;
+  --rail-bg: #0a1214; --rail-ink: #c9d6d8; --rail-mute: #9fb1b5; --rail-hi: #1b2a2e; --rail-line: #26373b; --rail-accent: #5dc3ca;
+}
+body { font-family: var(--font-sans); }
+
+/* ---------- ปุ่ม ---------- */
+.ld-btn { transition: background-color 120ms ease, border-color 120ms ease, transform 120ms var(--ease); }
+.ld-btn:active:not([disabled]) { transform: scale(0.98); }
+.ld-btn:not(.ld-btn--primary):not(.ld-btn--quiet):not(.ld-btn--danger) { border-color: var(--line); }
+.ld-btn:not(.ld-btn--primary):not(.ld-btn--quiet):not(.ld-btn--danger):hover { background: var(--panel-alt); }
+.ld-btn--primary:hover { background: var(--brand-ink); border-color: var(--brand-ink); filter: none; }
+.rowbtn { min-height: 40px; padding: 0 12px; gap: 4px; font-size: 14px; }
+.rowbtn svg { transition: transform 160ms var(--ease); }
+.rowbtn:hover svg { transform: translateX(2px); }
+.rowbtn[aria-pressed="true"] { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-ink); }
+@media (pointer: coarse) { .rowbtn { min-height: 44px; } }
+
+/* ---------- โครงหน้า: เมนูซ้าย หัวหน้าขาว พื้นเทาอ่อน ---------- */
+.ld-shell__main { padding: 0 0 48px; gap: 0; max-width: none; }
+.apphead { position: sticky; top: 0; z-index: 6; min-height: 64px; padding: 8px 16px; gap: 8px 12px; background: var(--surface-200); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.databar { order: 0; flex: none; margin: 0; padding: 16px 16px 0; flex-wrap: wrap; }
+.ld-shell__main > .draftbar { margin: 16px 16px 0; }
+.page { padding: 16px 16px 0; gap: var(--space-5); }
+.anchor { scroll-margin-top: 88px; }
+.ld-panel { border-radius: 16px; box-shadow: none; }
+.ld-panel__title { font: 600 22px/30px var(--font-sans); }
+.pagehead { align-items: flex-start; padding-top: 0; gap: var(--space-3) var(--space-5); }
+.h1 { font: 600 28px/36px var(--font-sans); letter-spacing: 0; }
+.lead { font: 400 16px/26px var(--font-sans); }
+@container ldshell (min-width: 700px) {
+  .apphead { padding: 8px 28px; }
+  .databar { padding: 16px 28px 0; }
+  .ld-shell__main > .draftbar { margin: 16px 28px 0; }
+  .page { padding: 16px 28px 0; }
+  .h1 { font: 600 36px/45px var(--font-sans); }
+  .ld-panel__head { padding: var(--space-4) var(--space-5); }
+  .ld-panel__body { padding: var(--space-5); }
+}
+@container ldshell (min-width: 1000px) {
+  .ld-shell__frame { grid-template-columns: 240px minmax(0, 1fr); }
+  .apphead { padding-inline: 32px; }
+  .databar { padding-inline: 32px; }
+  .ld-shell__main > .draftbar { margin-inline: 32px; }
+  .page { padding-inline: 32px; max-width: 1320px; }
+  .crumb { margin-right: 0; font-size: 14px; }
+  .crumb span:first-child { color: var(--ink-muted); }
+}
+
+/* ---------- เมนูซ้าย (จอกว้าง) ---------- */
+.rail-label { display: none; }
+.rail-ind { display: none; }
+@container ldshell (min-width: 1000px) {
+  .ld-steps { background: var(--rail-bg); color: var(--rail-ink); padding: 24px 16px; gap: 0; border: 0; overflow-y: auto; }
+  .ld-steps > *:not(.rail-ind) { position: relative; z-index: 1; }
+  .rail-ind { display: block; position: absolute; z-index: 0; left: 0; top: 0; width: var(--ind-w, 0); height: var(--ind-h, 0); transform: translate(var(--ind-x, 0), var(--ind-y, 0)); background: var(--rail-hi); border-radius: 8px; opacity: 0; pointer-events: none; }
+  .rail-ind::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: var(--rail-accent); }
+  .ld-steps[data-ind] .rail-ind { opacity: 1; }
+  .ld-steps[data-ind="on"] .rail-ind { transition: transform 320ms var(--ease), width 320ms var(--ease), height 320ms var(--ease); }
+
+  .rail-brand { gap: 10px; padding: 0 8px; margin-bottom: 20px; border: 0; color: #fff; }
+  .rail-brand .ic, .rail-brand svg { color: var(--rail-accent); }
+  .rail-brand__t { flex-direction: row; align-items: baseline; gap: 6px; }
+  .rail-brand__t strong { font: 600 24px/32px var(--font-sans); color: #fff; }
+  .rail-brand__t span { font: 400 12px/16px var(--font-sans); color: var(--rail-mute); }
+
+  .ld-steps ol { display: flex; flex-direction: column; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; }
+  .rail-home { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 12px; border-radius: 8px; color: var(--rail-ink); font: 400 16px/24px var(--font-sans); text-decoration: none; transition: background-color 160ms ease, color 160ms ease; }
+  .rail-label { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 12px; margin-top: 4px; color: var(--rail-ink); font: 400 16px/24px var(--font-sans); }
+  .rail-label .ic { color: var(--rail-ink); }
+  .ld-steps li:not(.rail-label) { margin-left: 20px; padding-left: 0; border-left: 1px solid var(--rail-line); }
+  .ld-steps li:not(.rail-label)::before { display: none; }
+  .ld-steps .ld-step { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; min-height: 44px; padding: 8px 8px 8px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--rail-ink); font: 400 14px/20px var(--font-sans); text-align: left; transition: background-color 160ms ease, color 160ms ease; }
+  .ld-steps .ld-step[data-state="todo"] { color: var(--rail-ink); }
+  .ld-steps .ld-step[data-state="current"] { min-height: 44px; background: var(--rail-hi); color: #fff; font-weight: 400; }
+  .ld-steps .ld-step .ld-step__sub, .ld-steps .ld-step[data-state] .ld-step__sub, .ld-steps .step-ic { display: none; }
+  .ld-steps .ld-step .ld-step__n { display: none; }
+  .ld-steps .ld-step[data-state="done"] .ld-step__n { display: inline-flex; order: 3; margin-left: auto; width: auto; height: auto; background: transparent; border: 0; color: var(--rail-accent); font: 500 14px/1 var(--font-sans); }
+  .rail-home[aria-current="page"] { background: var(--rail-hi); color: #fff; }
+  .ld-steps[data-ind] .ld-step[data-state="current"], .ld-steps[data-ind] .rail-home[aria-current="page"] { background: transparent; }
+  .rail-home:hover, .ld-steps .ld-step:hover { background: color-mix(in srgb, var(--rail-hi) 70%, transparent); color: #fff; }
+  .ld-steps[data-ind] .ld-step[data-state="current"]:hover, .ld-steps[data-ind] .rail-home[aria-current="page"]:hover { background: transparent; }
+  .rail-foot { margin-top: auto; padding: 16px 8px 0; border-top: 1px solid var(--rail-line); font: 400 13px/20px var(--font-sans); color: var(--rail-mute); }
+  .ld-steps :focus-visible { outline: 2px solid var(--rail-accent); outline-offset: 1px; }
+}
+
+/* ---------- ตัวกรองและตารางรายการ ---------- */
+.listcard { overflow: hidden; }
+.filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; padding: 20px 24px 16px; }
+.fgrp { display: flex; flex-direction: column; gap: 8px; min-width: 180px; }
+.fgrp--grow { flex: 1 1 260px; }
+.fgrp label { font: 500 16px/24px var(--font-sans); color: var(--ink); }
+.finput { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface-200); color: var(--ink-muted); }
+.finput:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.finput input { all: unset; flex: 1; min-width: 0; font: 400 16px/24px var(--font-sans); color: var(--ink); }
+.fselect { min-height: 44px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface-200); color: var(--ink); font: 500 16px/24px var(--font-sans); }
+.fselect:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.fclear { align-self: flex-end; min-height: 44px; padding: 0 8px; border: 0; background: none; color: var(--ink-muted); font: 400 16px/24px var(--font-sans); cursor: pointer; border-radius: 8px; }
+.fclear:hover:not(:disabled) { color: var(--ink); background: var(--panel-alt); }
+.fclear:disabled { cursor: default; opacity: 0.7; }
+.fclear:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.listcard__count { margin: 0; padding: 12px 24px; border-top: 1px solid var(--line); font: 400 13px/20px var(--font-sans); color: var(--ink-muted); }
+.listcard__empty { margin: 0; padding: 32px 24px; border-top: 1px solid var(--line); color: var(--ink-muted); }
+.listcard__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; }
+.listcard__head > div { display: flex; flex-direction: column; gap: 4px; }
+.listcard__t { font: 600 24px/32px var(--font-sans); }
+.listcard .ld-table-wrap { border: 0; border-radius: 0; background: transparent; }
+.listcard .ld-table th { font: 500 13px/20px var(--font-sans); color: var(--ink-muted); background: var(--panel-alt); padding: 12px 20px; border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); }
+.listcard .ld-table td { padding: 12px 20px; border-bottom: 1px solid var(--line); font: 400 16px/24px var(--font-sans); }
+.listcard .ld-table tr:last-child td { border-bottom: 0; }
+.listcard .ld-table tbody tr { transition: background-color 120ms ease; }
+.listcard .ld-table tbody tr:hover { background: var(--panel-alt); }
+.listcard .ld-table tbody tr[data-selected="true"] { background: var(--brand-soft); }
+.listcard .ld-table tbody tr[data-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--brand); }
+.cell-act { text-align: right; }
+.mono { font: 500 15px/24px var(--font-mono); letter-spacing: 0; }
+.rname { font-weight: 500; }
+
+/* จอแคบ: แต่ละรันเป็นการ์ดหนึ่งใบ แถวบนรหัสรันกับปุ่ม แถวกลางชื่อ แถวล่างสถานะกับวันที่ */
+@container ldshell (max-width: 699px) {
+  .filters { padding: 16px; }
+  .listcard__count, .listcard__head { padding-inline: 16px; }
+  .listcard .ld-table-wrap { padding: 0 16px 16px; }
+  .hist-table tr { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; padding: 16px; align-items: center; }
+  .hist-table td::before { display: none; }
+  .hist-table td[data-label="รัน"] { grid-column: 1; grid-row: 1; }
+  .hist-table td[data-label="เปิด"] { grid-column: 2; grid-row: 1; justify-self: end; align-self: center; }
+  .hist-table td[data-label="ชื่อการทดลอง"] { grid-column: 1 / -1; grid-row: 2; }
+  .hist-table td[data-label="สถานะ"] { grid-column: 1; grid-row: 3; }
+  .hist-table td[data-label="สร้างเมื่อ"] { grid-column: 2; grid-row: 3; justify-self: end; font-size: 14px; color: var(--ink-muted); }
+  .listcard .ld-table td { font-size: 15px; line-height: 22px; border-bottom: 0; }
+  .listcard .ld-table tbody tr[data-selected="true"] td:first-child { box-shadow: none; }
+  .listcard .ld-table tbody tr[data-selected="true"] { box-shadow: inset 3px 0 0 var(--brand); }
+}
+
+/* จุดสถานะของรัน (บอกด้วยคำเสมอ) */
+.spill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 6px; background: var(--surface-300); color: var(--ink); font: 500 13px/20px var(--font-sans); white-space: nowrap; }
+.spill i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-muted); flex: none; }
+.spill[data-s="open"] { background: var(--brand-soft); color: var(--brand-ink); }
+.spill[data-s="open"] i { background: var(--brand); }
+.spill[data-s="success"] i { background: var(--ok-ink); }
+.spill[data-s="partial"] i { background: var(--warn-ink); }
+.spill[data-s="failed"] i { background: var(--danger); }
+.spill[data-s="next"] i { background: transparent; border: 2px solid var(--ink-muted); }
+
+/* ---------- หน้าวันนี้ ---------- */
+.today { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@container ldshell (min-width: 1000px) { .today { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); } }
+.hero.todaycard, [data-theme="dark"] .hero.todaycard { border-color: var(--line); grid-template-columns: minmax(0, 1fr); padding: 24px; gap: 20px; border-radius: 16px; background: var(--surface-200); align-content: start; }
+.todaycard .hero__body { max-width: 56ch; }
+.todaycard .flow__t { font-size: 14px; line-height: 20px; }
+.todaycard .flow__s { font-size: 13px; }
+.todaycard .hero__greet { font: 600 28px/36px var(--font-sans); letter-spacing: 0; }
+.todaycard .machine { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.todaycard .machine__code { font-family: var(--font-mono); }
+.hero__cta .ld-btn--primary { min-height: var(--touch); font-size: 16px; padding-inline: var(--space-4); }
+.sumcard { display: flex; flex-direction: column; gap: 16px; padding: 24px; }
+.sumcard__t { font: 600 22px/30px var(--font-sans); }
+.sumcard__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.sumcard__stats > div { display: flex; flex-direction: column-reverse; align-items: center; gap: 2px; text-align: center; }
+.sumcard__stats > div + div { border-left: 1px solid var(--line); }
+.sumcard__stats dd { margin: 0; font: 500 32px/40px var(--font-mono); font-variant-numeric: tabular-nums; }
+.sumcard__stats dt { font: 400 13px/20px var(--font-sans); color: var(--ink-muted); }
+.sumcard__start { display: flex; flex-direction: column; gap: 8px; }
+.sumcard__row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sumcard__row strong { font: 600 16px/24px var(--font-sans); }
+
+/* ---------- การเคลื่อนไหว: เข้าครั้งเดียว เส้นโค้งเดียว ไม่วน ---------- */
+@keyframes v8-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .page-enter { animation: none; }
+  .page > *, .reveal > * { animation: v8-rise 460ms var(--ease) both; }
+  .page > :nth-child(2), .reveal > :nth-child(2) { animation-delay: 60ms; }
+  .page > :nth-child(3), .reveal > :nth-child(3) { animation-delay: 120ms; }
+  .page > :nth-child(4), .reveal > :nth-child(4) { animation-delay: 180ms; }
+  .page > :nth-child(n+5), .reveal > :nth-child(n+5) { animation-delay: 240ms; }
+  .hist-table tbody tr { animation: v8-rise 380ms var(--ease) both; animation-delay: calc(140ms + var(--i, 0) * 45ms); }
+  .today .hero.todaycard, .today .sumcard { animation: v8-rise 480ms var(--ease) both; }
+  .today .sumcard { animation-delay: 80ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rail-ind { transition: none !important; }
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <rect x="0" y="0" width="960" height="360" rx="28" fill="#0f1719" />
+  <path d="M285 179h90m210 0h90" fill="none" stroke="#7f9193" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" />
+  <path d="M359 172l8 7-8 7" fill="none" stroke="#5dc3ca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M659 172l8 7-8 7" fill="none" stroke="#5dc3ca" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <rect x="73" y="84" width="214" height="190" rx="22" fill="#172124" stroke="#2b3a3c" stroke-width="2" />
+  <circle cx="180" cy="180" r="63" fill="#0f4349" />
+  <rect x="373" y="84" width="214" height="190" rx="22" fill="#172124" stroke="#2b3a3c" stroke-width="2" />
+  <circle cx="480" cy="180" r="63" fill="#0f4349" />
+  <rect x="673" y="84" width="214" height="190" rx="22" fill="#172124" stroke="#2b3a3c" stroke-width="2" />
+  <circle cx="780" cy="180" r="63" fill="#0f4349" />
+  <g>
+    <rect x="124" y="119" width="108" height="117" rx="13" fill="#172124" stroke="#5dc3ca" stroke-width="5" />
+    <path d="M144 119v117m15-88h50m-50 18h45m-45 18h30" fill="none" stroke="#5dc3ca" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M169 210l10-24 53-52 15 15-53 53Z" fill="#5dc3ca" stroke="#172124" stroke-width="4" stroke-linejoin="round" />
+    <path d="M225 142l15 15" fill="none" stroke="#172124" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+  <path d="M421 217h124m-114-94v100" fill="none" stroke="#7f9193" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M434 200q26 3 46-26t64-27" fill="none" stroke="#5dc3ca" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <g transform="translate(487 168) scale(0.88) translate(-20 -22.5)">
+    <path d="M20 4C20 4 7 18 7 28a13 13 0 0 0 26 0C33 18 20 4 20 4Z" fill="#5dc3ca" />
+  </g>
+  <rect x="744" y="121" width="72" height="112" rx="8" fill="#172124" stroke="#2b3a3c" stroke-width="2" />
+  <path d="M759 145h42m-42 13h28m-28 13h36" fill="none" stroke="#2b3a3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <g transform="translate(796 195) scale(0.47) translate(-20 -22.5)">
+    <path d="M20 4C20 4 7 18 7 28a13 13 0 0 0 26 0C33 18 20 4 20 4Z" fill="#5dc3ca" />
+  </g>
+</svg>

@@ -1,0 +1,126 @@
+/* =====================================================================
+   รอบ 4: ละอองต่อเนื่อง, Select แบบใหม่, ลิ้นชัก, สวิตช์, สถานะบอร์ด
+   ===================================================================== */
+
+/* ----- ละอองต่อเนื่อง (ตกแต่งเท่านั้น) ----- */
+.spray { display: block; width: 100%; height: 100%; contain: paint; }
+.spray circle { fill: var(--brand); transform-box: fill-box; transform-origin: center; animation: sprayFlow var(--dur, 6s) cubic-bezier(.25, .6, .35, 1) var(--del, 0s) infinite both; }
+.login__art .spray { position: absolute; inset: 0 0 auto 0; height: 64%; opacity: 0.6; }
+.login__mobileart .spray { position: absolute; inset: 0; opacity: 0.7; }
+[data-idle="1"] .spray circle { animation-play-state: paused; }
+@keyframes sprayFlow {
+  0% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(1.5); }
+  16% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+}
+@media (prefers-reduced-motion: reduce) { .spray circle { animation: none !important; } }
+
+/* ----- Select: ปุ่มกับรายการที่เลื่อนลงนุ่ม ๆ ----- */
+.sel__btn { width: 100%; min-height: var(--touch); display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--surface-200); color: var(--ink); font: 400 16px/24px var(--font-sans); text-align: left; cursor: pointer; transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease; }
+.sel__btn:hover { background: var(--surface-100); }
+.sel__btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.sel__btn[data-open="true"] { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand); }
+.sel__val { min-width: 0; overflow-wrap: anywhere; }
+.sel__chev { flex: none; display: inline-flex; color: var(--ink-muted); transition: transform 200ms cubic-bezier(.2, .8, .2, 1); }
+.sel__btn[data-open="true"] .sel__chev { transform: rotate(180deg); color: var(--brand); }
+.sel__list { position: fixed; z-index: 120; margin: 0; padding: 6px; list-style: none; overflow-y: auto; background: var(--surface-200); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08); font-family: var(--font-sans);
+  opacity: 0; transform: translateY(-6px) scale(0.98); transform-origin: top center; transition: opacity 150ms ease, transform 180ms cubic-bezier(.2, .8, .2, 1); }
+.sel__list[data-up="true"] { transform: translateY(6px) scale(0.98); transform-origin: bottom center; }
+.sel__list[data-open="true"] { opacity: 1; transform: none; }
+.sel__list li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 44px; padding: 6px var(--space-3); border-radius: 9px; cursor: pointer; font: 400 16px/24px var(--font-sans); }
+.sel__list li[data-active="true"] { background: var(--surface-300); }
+.sel__list li[aria-selected="true"] { background: var(--brand-soft); color: var(--brand-ink); font-weight: 600; }
+.sel__t { display: flex; flex-direction: column; min-width: 0; }
+.sel__t small { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
+.sel__ok { flex: none; display: inline-flex; color: var(--brand); }
+
+/* ----- หัวหน้า: ตัวเลือกเครื่อง ปุ่มบอร์ด ----- */
+.machinepick { display: none; width: 236px; }
+.machinepick .sel__val { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@container ldshell (min-width: 700px) { .machinepick { display: block; } }
+.machinepick::after { content: none; }
+.devpill { display: none; align-items: center; gap: var(--space-2); min-height: var(--touch); padding: 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-pill); background: var(--surface-200); color: var(--ink); font: 500 14px/20px var(--font-sans); cursor: pointer; white-space: nowrap; }
+.devpill:hover { background: var(--surface-300); }
+@container ldshell (min-width: 700px) { .devpill { display: inline-flex; } }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-muted); flex: none; position: relative; }
+.dot[data-s="online"] { background: var(--ok-ink); }
+.dot[data-s="connecting"] { background: var(--warn-ink); }
+.dot[data-s="error"] { background: var(--danger); }
+.dot[data-s="off"] { background: transparent; border: 2px solid var(--ink-muted); }
+.dot[data-s="online"]::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--ok-ink); animation: ping 900ms cubic-bezier(.2, .8, .2, 1) 1 both; }
+
+/* ----- Drawer: ลิ้นชักเลื่อนเข้าจากขวา (มือถือเป็นแผ่นเลื่อนขึ้นจากล่าง) ----- */
+.drawer { position: fixed; inset: 0; z-index: 90; }
+.drawer__scrim { position: absolute; inset: 0; background: rgba(8, 20, 22, 0.46); opacity: 0; transition: opacity 240ms ease; }
+.drawer[data-open="true"] .drawer__scrim { opacity: 1; }
+.drawer__panel { position: absolute; top: 0; right: 0; bottom: 0; width: min(540px, 100vw); display: flex; flex-direction: column; background: var(--surface-100); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.6; box-shadow: -18px 0 48px rgba(0, 0, 0, 0.18); outline: none; transform: translateX(100%); transition: transform 280ms cubic-bezier(.2, .8, .2, 1); }
+.drawer[data-open="true"] .drawer__panel { transform: none; }
+.drawer__panel *, .drawer__panel *::before, .drawer__panel *::after { box-sizing: border-box; }
+.drawer__panel :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.drawer__grab { display: none; }
+.drawer__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--line); background: var(--surface-100); }
+.drawer__title { font: 600 20px/28px var(--font-sans); margin: 0; }
+.drawer__body { flex: 1; overflow-y: auto; padding: var(--space-4) var(--space-5) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); overscroll-behavior: contain; }
+@media (max-width: 699px) {
+  .drawer__panel { top: auto; left: 0; width: 100%; max-height: 90dvh; border-radius: 18px 18px 0 0; transform: translateY(100%); box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.2); }
+  .drawer[data-open="true"] .drawer__panel { transform: none; }
+  .drawer__grab { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--line-strong); margin: 8px auto 0; }
+  .drawer__head { padding: var(--space-2) var(--space-4) var(--space-3); border-bottom: 0; border-radius: 18px 18px 0 0; }
+  .drawer__body { padding: var(--space-2) var(--space-4) calc(var(--space-6) + env(safe-area-inset-bottom)); }
+}
+
+/* ----- Switch ----- */
+.switch { display: flex; align-items: flex-start; gap: var(--space-3); min-height: var(--touch); cursor: pointer; position: relative; }
+.switch input { position: absolute; opacity: 0; width: 52px; height: 32px; margin: 0; cursor: pointer; }
+.switch__track { flex: none; width: 52px; height: 32px; border-radius: 16px; background: var(--surface-300); border: 1.5px solid var(--line-strong); position: relative; transition: background-color 180ms ease, border-color 180ms ease; }
+.switch__thumb { position: absolute; top: 3px; left: 3px; width: 23px; height: 23px; border-radius: 50%; background: var(--ink-muted); transition: transform 220ms cubic-bezier(.2, .8, .2, 1), background-color 180ms ease; }
+.switch input:checked + .switch__track { background: var(--brand); border-color: var(--brand); }
+.switch input:checked + .switch__track .switch__thumb { transform: translateX(20px); background: var(--on-brand); }
+.switch input:focus-visible + .switch__track { outline: 3px solid var(--focus); outline-offset: 2px; }
+.switch__t { display: flex; flex-direction: column; padding-top: 3px; min-width: 0; }
+.switch__t > span { font: 500 16px/24px var(--font-sans); }
+.switch__t small { font: 400 14px/22px var(--font-sans); color: var(--ink-muted); }
+
+/* ----- แถวทางลัดและสถานะบอร์ด ----- */
+.linklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.linklist li { border-bottom: 1px solid var(--line); }
+.linklist li:last-child { border-bottom: 0; }
+.linkrow { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 56px; padding: var(--space-2) 0; border: 0; background: transparent; color: var(--ink); font: 500 16px/24px var(--font-sans); text-align: left; cursor: pointer; }
+.linkrow:hover .linkrow__ic { background: var(--brand-soft); color: var(--brand-ink); }
+.linkrow__ic { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--surface-100); color: var(--ink-muted); display: inline-flex; align-items: center; justify-content: center; transition: background-color 140ms ease, color 140ms ease; }
+.linkrow__t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.linkrow__t small { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
+.linkrow__go { flex: none; color: var(--ink-muted); display: inline-flex; }
+.boardstat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.boardstat > div { background: var(--surface-200); border-radius: var(--radius-md); padding: var(--space-3); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.boardstat .k { font: 500 13px/20px var(--font-sans); color: var(--ink-muted); }
+.boardstat .v { font: 500 16px/24px var(--font-sans); overflow-wrap: anywhere; }
+.statusline { display: flex; align-items: center; gap: var(--space-2); font: 600 17px/26px var(--font-sans); }
+.loglist { font: 400 12px/18px var(--font-mono); background: var(--surface-300); border-radius: var(--radius-md); padding: var(--space-3); max-height: 180px; overflow: auto; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.loglist li { overflow-wrap: anywhere; }
+.loglist li[data-d="tx"] { color: var(--st-observed-fg); }
+.loglist li[data-d="sys"] { color: var(--ink-muted); }
+button.camrow { border: 0; background: transparent; padding: 0; min-height: var(--touch); cursor: pointer; text-align: left; }
+button.camrow:hover { color: var(--ink); }
+.camrow { display: inline-flex; align-items: center; gap: var(--space-2); font: 500 14px/20px var(--font-sans); color: var(--ink-muted); }
+
+/* ----- หัวหน้าที่จอกลาง: ย่อของรองให้พอดีบรรทัดเดียว ----- */
+.ld-btn { white-space: nowrap; }
+.home-link { display: none; }
+.usermenu__item--home { display: flex; }
+@container ldshell (min-width: 1280px) { .home-link { display: inline-flex; } .usermenu__item--home { display: none; } }
+@container ldshell (max-width: 1279px) { .machinepick { width: 200px; } .devpill .muted { display: none; } .databar .ld-chip { font-size: 11px; } }
+
+/* ----- ภาพรวม: แถบเริ่มใช้งานบรรทัดเดียว และทางลัดแบบกระเบื้อง 2 คอลัมน์ ----- */
+.strip--col { align-items: center; padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4); }
+.strip__t { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.strip__t strong { font: 600 15px/22px var(--font-sans); }
+.strip__t span { font: 400 14px/22px var(--font-sans); overflow-wrap: anywhere; }
+.strip__t .bar { margin-top: var(--space-1); background: var(--surface-200); }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.tile2 { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: var(--space-3) var(--space-4); min-height: 96px; background: var(--surface-200); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; text-align: left; cursor: pointer; font-family: var(--font-sans); transition: border-color 140ms ease, background-color 140ms ease; }
+.tile2:hover { border-color: var(--brand); background: var(--surface-100); }
+.tile2__ic { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 10px; background: var(--brand-soft); color: var(--brand-ink); }
+.tile2__t { font: 600 15px/22px var(--font-sans); }
+.tile2__s { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); overflow-wrap: anywhere; }

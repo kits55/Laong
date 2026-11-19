@@ -1,0 +1,12 @@
+<!-- @dsCard group="พื้นฐาน" height=420 subtitle="ช่องกรอก 16px, ค่าว่างไม่ใช่ 0" -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>body{margin:0;background:var(--surface-100)}.pv{padding:16px;display:flex;flex-direction:column;gap:16px}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.cap{font:400 13px/20px var(--font-sans);color:var(--ink-muted);margin:0}</style>
+<div class="ld-root"><div class="pv">
+<div class="ld-grid">
+<div class="ld-field"><label class="ld-label" for="f1">อุณหภูมิลมเข้า (Tin)</label><div class="ld-input-wrap"><input id="f1" class="ld-input ld-input--num" inputmode="decimal" value="" placeholder="ยังไม่มีค่า"><span class="ld-unit">°C</span></div><span class="ld-hint">เว้นว่างได้ ระบบจะนับว่า "ยังไม่มีค่า" ไม่ใช่ 0</span></div>
+<div class="ld-field"><label class="ld-label" for="f2">Tout ช่วงนิ่ง ค่าที่ 1</label><div class="ld-input-wrap"><input id="f2" class="ld-input ld-input--num" inputmode="decimal" value="85.2"><span class="ld-unit">°C</span></div><span class="ld-hint">จดจากหน้าจอเครื่อง</span></div>
+<div class="ld-field" data-invalid="true"><label class="ld-label" for="f3">อัตราป้อน</label><div class="ld-input-wrap"><input id="f3" class="ld-input ld-input--num" inputmode="decimal" value="-3" aria-describedby="e3"><span class="ld-unit">mL/min</span></div><span id="e3" class="ld-error">ค่าติดลบไม่ได้ กรอกตัวเลข 0 ขึ้นไป หรือเว้นว่าง</span></div>
+<div class="ld-field"><label class="ld-label" for="f4">โปรไฟล์เครื่อง</label><div class="ld-input-wrap"><select id="f4" class="ld-select"><option>เครื่อง A (ตัวอย่าง)</option><option>เครื่อง B (ตัวอย่าง)</option></select></div></div>
+<div class="ld-field" style="grid-column:1/-1"><label class="ld-label" for="f5">หมายเหตุการทดลอง</label><div class="ld-input-wrap"><textarea id="f5" class="ld-textarea" placeholder="เช่น หัวฉีดอุดตันนาทีที่ 12"></textarea></div></div>
+</div>
+</div></div>

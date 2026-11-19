@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="th" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chart preview (ข้อมูลตัวอย่าง)</title>
+<link rel="stylesheet" href="../../tokens.generated.css">
+<link rel="stylesheet" href="../bundle.css">
+<link rel="stylesheet" href="../../../src/styles/app.css">
+<style>body{margin:0;padding:24px;background:var(--surface-100)}.wrap{max-width:640px}</style>
+</head>
+<body class="ld-root">
+<div class="wrap">
+<p class="cap">ข้อมูลตัวอย่าง ไม่ใช่ผลทดลองจริง ตัวอย่างนี้เป็น SVG ตายตัว ตัวจริงสร้างจาก <code>PointsChart</code></p>
+<figure class="chart">
+  <figcaption class="chart__cap">Tout ที่ทำนาย เทียบกับ Tout ที่อ่านได้ แยกตามรัน</figcaption>
+  <div class="chart__box">
+    <svg width="560" height="240" role="img" aria-label="กราฟตัวอย่าง Tout ที่ทำนายและที่อ่านได้ ดูตารางด้านล่าง">
+      <line x1="48" x2="546" y1="40" y2="40" class="chart__grid"/><text x="40" y="44" text-anchor="end" class="chart__tick">90</text>
+      <line x1="48" x2="546" y1="110" y2="110" class="chart__grid"/><text x="40" y="114" text-anchor="end" class="chart__tick">85</text>
+      <line x1="48" x2="546" y1="180" y2="180" class="chart__grid"/><text x="40" y="184" text-anchor="end" class="chart__tick">80</text>
+      <text x="12" y="120" transform="rotate(-90 12 120)" text-anchor="middle" class="chart__axis">Tout (°C)</text>
+      <line x1="150" x2="150" y1="130" y2="100" class="chart__link"/><line x1="300" x2="300" y1="90" y2="60" class="chart__link"/>
+      <rect x="145.5" y="125.5" width="9" height="9" rx="1.5" fill="var(--surface-200)" stroke="var(--st-predicted-fg)" stroke-width="2"/>
+      <circle cx="150" cy="100" r="4.5" fill="var(--st-observed-fg)" stroke="var(--surface-200)" stroke-width="1.5"/>
+      <rect x="295.5" y="85.5" width="9" height="9" rx="1.5" fill="var(--surface-200)" stroke="var(--st-predicted-fg)" stroke-width="2"/>
+      <circle cx="300" cy="60" r="4.5" fill="var(--st-observed-fg)" stroke="var(--surface-200)" stroke-width="1.5"/>
+      <rect x="445.5" y="145.5" width="9" height="9" rx="1.5" fill="var(--surface-200)" stroke="var(--st-predicted-fg)" stroke-width="2"/>
+      <text x="150" y="226" text-anchor="middle" class="chart__tick">A</text><text x="300" y="226" text-anchor="middle" class="chart__tick">B</text><text x="450" y="226" text-anchor="middle" class="chart__tick">C</text>
+    </svg>
+  </div>
+  <ul class="chart__legend">
+    <li><svg width="22" height="14" aria-hidden="true"><rect x="6.5" y="2.5" width="9" height="9" rx="1.5" fill="var(--surface-200)" stroke="var(--st-predicted-fg)" stroke-width="2"/></svg><span>ที่ทำนาย</span><span class="chart__kind">Predicted</span></li>
+    <li><svg width="22" height="14" aria-hidden="true"><circle cx="11" cy="7" r="4.5" fill="var(--st-observed-fg)"/></svg><span>ที่อ่านได้</span><span class="chart__kind">Observed</span></li>
+  </ul>
+  <p class="cap">รัน C ยังไม่มีค่าที่อ่านได้ จึงไม่มีจุดวงกลม ไม่ถูกวาดเป็น 0</p>
+  <details class="chart__table" open><summary>ดูเป็นตาราง</summary>
+    <div class="ld-table-wrap"><table class="ld-table"><thead><tr><th>รัน</th><th class="ld-num">ทำนาย (°C)</th><th class="ld-num">อ่านได้ (°C)</th></tr></thead>
+    <tbody><tr><td>A</td><td class="ld-num">83.0</td><td class="ld-num">86.0</td></tr><tr><td>B</td><td class="ld-num">87.0</td><td class="ld-num">91.0</td></tr><tr><td>C</td><td class="ld-num">81.0</td><td class="ld-num">ยังไม่มีค่า</td></tr></tbody></table></div>
+  </details>
+</figure>
+</div>
+</body>
+</html>
