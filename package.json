@@ -6,12 +6,12 @@
   "type": "module",
   "scripts": {
     "gen:core": "node scripts/gen-core.mjs",
-    "predev": "node scripts/gen-core.mjs",
+    "predev": "node scripts/vault.mjs open && node scripts/gen-core.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/gen-core.mjs",
+    "prebuild": "node scripts/vault.mjs open && node scripts/gen-core.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "node scripts/gen-core.mjs && node --test \"tests/*.test.mjs\"",
+    "test": "node scripts/vault.mjs open && node scripts/gen-core.mjs && node --test \"tests/*.test.mjs\"",
     "verify:core": "node scripts/gen-core.mjs",
     "verify:copy": "node scripts/check-copy.mjs"
   },
