@@ -4,8 +4,3 @@ dist
 private-data
 backups
 .claude/refiner-lessons.md
-public/laong-assets/run-prediction.js
-public/laong-assets/integration-test-physics.js
-src/core/original
-src/core/physics.gen.js
-src/core/physics.gen.d.ts
